@@ -86,7 +86,7 @@ body, html {
 /* Mobile Changes */
 @media only screen and (max-width: 595px) {
   .globalButton {
-    width: 90%;ss
+    width: 90%;
   }
 
 }
