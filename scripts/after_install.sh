@@ -12,7 +12,7 @@ fi
 
 # Install project dependencies
 echo "Installing project dependencies..."
-npm ci
+npm i
 
 # Build the Next.js application for production
 echo "Building the application..."
