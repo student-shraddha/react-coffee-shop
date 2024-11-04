@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Navigate to the application directory
-cd /home/ec2-user/react-coffee-shop || exit 1
+cd /home/ec2-user/ || exit 1
 
 # Install npm if it's not already installed
 if ! command -v npm &> /dev/null; then
