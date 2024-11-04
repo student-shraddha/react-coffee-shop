@@ -19,18 +19,18 @@ echo "Building the application..."
 npm run build
 
 # Install PM2 globally if it's not already installed
-if ! command -v pm2 &> /dev/null; then
-    echo "PM2 is not installed. Installing PM2 globally..."
-    npm install -g pm2
-fi
+#if ! command -v pm2 &> /dev/null; then
+ #   echo "PM2 is not installed. Installing PM2 globally..."
+  #  npm install -g pm2
+#fi
 
 # Stop any previous instance of the application running on PM2
-echo "Stopping any existing PM2 instances..."
-pm2 stop react-coffee-shop || true
+#echo "Stopping any existing PM2 instances..."
+#pm2 stop react-coffee-shop || true
 
 # Start the application with PM2
 echo "Starting the application with PM2..."
-pm2 start npm --name "coffee-shop" -- start
+pm2 start "npm start" --name "new"
 
 # Save the PM2 process list and configure it to restart on system reboot
 echo "Saving PM2 process list and setting up startup script..."
