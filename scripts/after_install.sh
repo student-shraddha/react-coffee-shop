@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Navigate to the application directory
-cd /home/ec2-user/next-ecommerce || exit 1
+cd /home/ec2-user/react-coffee-shop || exit 1
 
 # Install npm if it's not already installed
 if ! command -v npm &> /dev/null; then
@@ -26,11 +26,11 @@ fi
 
 # Stop any previous instance of the application running on PM2
 echo "Stopping any existing PM2 instances..."
-pm2 stop next-ecommerce || true
+pm2 stop react-coffee-shop || true
 
 # Start the application with PM2
 echo "Starting the application with PM2..."
-pm2 start npm --name "next-ecommerce" -- start
+pm2 start npm --name "coffee=shop" -- start
 
 # Save the PM2 process list and configure it to restart on system reboot
 echo "Saving PM2 process list and setting up startup script..."
