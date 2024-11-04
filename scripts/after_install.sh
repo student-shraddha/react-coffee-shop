@@ -30,7 +30,7 @@ pm2 stop react-coffee-shop || true
 
 # Start the application with PM2
 echo "Starting the application with PM2..."
-pm2 start npm --name "coffee=shop" -- start
+pm2 start npm --name "coffee-shop" -- start
 
 # Save the PM2 process list and configure it to restart on system reboot
 echo "Saving PM2 process list and setting up startup script..."
