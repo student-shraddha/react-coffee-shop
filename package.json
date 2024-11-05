@@ -4,9 +4,9 @@
   "description": "A mock up website of a coffee shop using Next.js(React & JavaScript)",
   "main": "next.config.js",
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
     "start": "next start",
+     "dev": "next dev",
     "lint": "next lint",
     "test": "jest --watch"
   },
