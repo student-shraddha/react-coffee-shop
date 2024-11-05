@@ -1,42 +1,40 @@
 #!/bin/bash
 
 # Navigate to the application directory
-cd /home/ec2-user/ || exit 1
+cd /home/ec2-user/react-coffee-shop || exit 1
 
-# Install npm and Node.js if they are not already installed
+# Ensure npm is available
 if ! command -v npm &> /dev/null; then
-    echo "npm is not installed. Installing npm and Node.js..."
-    curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash -
-    sudo yum install -y nodejs
+    echo "npm is not installed. Please install Node.js and npm."
+    exit 1
 fi
 
-# Install project dependencies
-echo "Installing project dependencies..."
-npm install
-
-# Build the application for production
-echo "Building the application..."
-npm run build
-
-# Install PM2 globally if it's not already installed
+# Ensure PM2 is available and install it if missing
 if ! command -v pm2 &> /dev/null; then
     echo "PM2 is not installed. Installing PM2 globally..."
     npm install -g pm2
 fi
 
-# Stop any previous instance of the application running on PM2
+# Stop any existing instances to avoid duplicates
 echo "Stopping any existing PM2 instances..."
-pm2 stop new || true
-pm2 delete new || true
+pm2 stop react-coffee || true
+pm2 delete react-coffee || true
 
-# Start the application with PM2
+# Install project dependencies
+echo "Installing project dependencies..."
+npm install
+
+# Build the Next.js application
+echo "Building the application..."
+npm run build
+
+# Start the application using PM2
 echo "Starting the application with PM2..."
-pm2 start "npm start" --name "new"
+pm2 start "npx next start" --name "react-coffee"
 
-# Save the PM2 process list and configure it to restart on system reboot
+# Save the PM2 process list and configure it to restart on reboot
 echo "Saving PM2 process list and setting up startup script..."
 pm2 save
 pm2 startup systemd -u ec2-user --hp /home/ec2-user
-sudo env PATH=$PATH:/home/ec2-user/.nvm/versions/node/$(node -v)/bin pm2 startup systemd -u ec2-user --hp /home/ec2-user
 
-echo "after_install.sh script completed."
+echo "Deployment script completed successfully."
