@@ -76,14 +76,14 @@
 
     - name: Ensure Nginx is configured to reverse proxy to Next.js application
       copy:
-        dest: /etc/nginx/sites-available/{{ node_app_name }}
+        dest: /etc/nginx/sites-available/default
         content: |
           server {
               listen 80;
               server_name localhost;
 
               location / {
-                  proxy_pass http://localhost:{{ node_port }};
+                  proxy_pass http://localhost:3000;
                   proxy_http_version 1.1;
                   proxy_set_header Upgrade $http_upgrade;
                   proxy_set_header Connection 'upgrade';
