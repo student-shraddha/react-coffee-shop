@@ -1,0 +1,77 @@
+---
+- name: Deploy react-coffee-shop Application
+  hosts: webserver
+  become: true
+
+  vars:
+    node_app_name: react-coffee-shop
+    node_repo_url: "https://github.com/student-shraddha/react-coffee-shop.git"
+    node_project_dir: /var/www/react-coffee-shop
+    node_start_command: "npm run start"
+    node_port: 3000
+
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install dependencies
+      apt:
+        name:
+          - git
+          - curl
+          - nginx
+        state: present
+
+    - name: Install Node.js and npm
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+        apt-get install -y nodejs
+      args:
+        chdir: /
+
+    - name: Install PM2 globally using npm
+      npm:
+        name: pm2
+        global: yes
+
+    - name: Clone Next.js project from Git repository
+      git:
+        repo: "{{ node_repo_url }}"
+        dest: "{{ node_project_dir }}"
+        version: main  # Use the correct branch name
+
+    - name: Install Node.js dependencies
+      command: npm install
+      args:
+        chdir: "{{ node_project_dir }}"
+
+    - name: Build the Next.js application
+      command: npm run build
+      args:
+        chdir: "{{ node_project_dir }}"
+
+    - name: Start Next.js application with PM2
+      command: pm2 start npm --name "{{ node_app_name }}" -- start
+      args:
+        chdir: "{{ node_project_dir }}"
+
+    - name: Generate PM2 startup script for automatic app restart after reboot
+      command: pm2 startup systemd -u {{ ansible_user }} --hp /home/{{ ansible_user }}
+      when: ansible_user is defined  # Ensure ansible_user is provided
+
+    - name: Save PM2 process list to restart on reboot
+      command: pm2 save
+
+    - name: Ensure PM2 service is started and enabled
+      systemd:
+        name: pm2-{{ ansible_user }}
+        state: started
+        enabled: yes
+      when: ansible_user is defined  # Ensure ansible_user is provided
+
+    - name: Restart Nginx to apply changes
+      service:
+        name: nginx
+        state: restarted
