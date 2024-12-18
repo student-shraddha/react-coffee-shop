@@ -1,5 +1,5 @@
 ---
-- name: Deploy react-coffee-shop   Application
+- name: Deploy react-coffee-shop Application
   hosts: webserver1  # Changed from 'webserver' to 'webserver1'
   become: true
 
