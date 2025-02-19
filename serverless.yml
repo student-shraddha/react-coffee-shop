@@ -1,0 +1,31 @@
+service: react-coffee-shop  # Your project name
+
+provider:
+  name: aws
+  runtime: nodejs18.x  # Using Node.js 18
+  region: us-east-1  # Change if needed
+  memorySize: 1024  # Adjust for performance
+  timeout: 30  # Ensure enough time for requests
+  environment:
+    NODE_ENV: production
+
+functions:
+  nextjsApp:
+    handler: handler.handler  # Ensure handler.js exists
+    events:
+      - httpApi:
+          path: /
+          method: ANY
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-nextjs
+
+custom:
+  serverless-nextjs:
+    memory: 1024
+    timeout: 30
+    name: react-coffee-shop
+    bucketName: react-coffee-shop-deployment
