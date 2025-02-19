@@ -2,16 +2,16 @@ service: react-coffee-shop  # Your project name
 
 provider:
   name: aws
-  runtime: nodejs18.x  # Using Node.js 18
-  region: us-east-1  # Change if needed
-  memorySize: 1024  # Adjust for performance
-  timeout: 30  # Ensure enough time for requests
+  runtime: nodejs18.x
+  region: ca-central-1  # Change to your region
+  memorySize: 1024
+  timeout: 30
   environment:
     NODE_ENV: production
 
 functions:
   nextjsApp:
-    handler: handler.handler  # Ensure handler.js exists
+    handler: handler.handler  # This now points to handler.js
     events:
       - httpApi:
           path: /
